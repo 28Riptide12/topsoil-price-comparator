@@ -1,4 +1,4 @@
-# 🌱 Topsoil Price Comparator
+#  Topsoil Price Comparator
 
 Compare bulk and retail topsoil listings on a like-for-like basis (per litre / per kg),
 work out how much you need with a planter calculator, and find the nearest supplier on a map.
