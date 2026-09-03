@@ -1,0 +1,12 @@
+{
+  "targets": [
+    {"supplier_id": "parkside-turf", "product_id": "parkside-topsoil-bulk", "url": "https://parksideturf.co.uk/product/top-soil-bulk-bag/", "price_selectors": [".summary .price", ".price"], "currency": "GBP"},
+    {"supplier_id": "tw-aggregates", "product_id": "tw-topsoil-10mm", "url": "https://www.twaggregates.co.uk/product/screened-top-soil-ts1/", "price_selectors": [".price > .woocommerce-Price-amount:nth-of-type(2)"], "currency": "GBP"},
+    {"supplier_id": "handicentre-online", "product_id": "handicentre-topsoil", "url": "https://www.handicentre.co.uk/products/building-supplies/bulk-bags/top-soil-bulk-bag-including-delivery", "price_selectors": [".price"], "currency": "GBP"},
+    {"supplier_id": "mgn-building-merchants", "product_id": "mgn-topsoil-bulk", "url": "https://www.mgnbm.co.uk/top-soil-bulk-bag/", "price_selectors": [".product-info-main .price", ".price"], "currency": "GBP"},
+    {"supplier_id": "m-markovitz", "product_id": "markovitz-topsoil-bulk", "url": "https://markovitz.co.uk/product/top-soil-bulk-bag/", "price_selectors": [".summary .price", ".price"], "currency": "GBP"}
+  ],
+  "discrepancy_percent": 10
+}
+
+  

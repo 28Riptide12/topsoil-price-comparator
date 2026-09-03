@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Topsoil Price Comparator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='leaflet.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body class="bg-stone-50 text-stone-800">
+  <header class="bg-emerald-800 text-white shadow-sm">
+    <div class="mx-auto flex max-w-7xl items-start justify-between gap-5 px-5 py-7">
+      <div>
+        <p class="eyebrow text-emerald-200">Local soil sourcing</p>
+        <h1 class="mt-1 text-3xl font-bold tracking-tight">Topsoil Price Comparator</h1>
+        <p class="mt-2 max-w-3xl text-emerald-100">Compare retail and bulk listings on a like-for-like basis, then find the supplier on the map.</p>
+      </div>
+      <button id="theme-toggle" type="button" class="theme-toggle" aria-pressed="false" aria-label="Switch to dark mode" title="Switch theme"><span class="theme-toggle-track" aria-hidden="true"><span class="theme-toggle-thumb"></span></span><span class="hidden sm:inline">Dark</span></button>
+      <a href="{{ url_for('serve_docs') }}" class="theme-toggle" title="Open topsoil documentation">Docs</a>
+    </div>
+  </header>
+
+  <main class="mx-auto grid max-w-7xl gap-6 px-5 py-6 lg:grid-cols-3">
+    <section class="space-y-6 lg:col-span-2">
+      <div class="rounded-xl bg-white p-5 shadow-sm ring-1 ring-stone-200">
+        <div class="flex flex-wrap items-baseline justify-between gap-2">
+          <div>
+            <h2 class="text-xl font-bold">Planter calculator</h2>
+            <p class="text-sm text-stone-500">Uses an average topsoil density of {{ density }} kg/L. Prices exclude delivery unless the supplier says otherwise.</p>
+          </div>
+          <span id="volume-result" class="result-pill">Enter dimensions</span>
+        </div>
+        <form id="calculator-form" class="mt-5 grid gap-3 sm:grid-cols-5">
+          <label class="block text-sm font-medium">Length <input required min="0" step="any" name="length" type="number" class="input mt-1" placeholder="e.g. 120"></label>
+          <label class="block text-sm font-medium">Width <input required min="0" step="any" name="width" type="number" class="input mt-1" placeholder="e.g. 40"></label>
+          <label class="block text-sm font-medium">Depth <input required min="0" step="any" name="depth" type="number" class="input mt-1" placeholder="e.g. 30"></label>
+          <label class="block text-sm font-medium">Unit
+            <select name="unit" class="input mt-1"><option value="cm">Centimetres</option><option value="m">Metres</option><option value="ft">Feet</option><option value="in">Inches</option></select>
+          </label>
+          <label class="block text-sm font-medium">How many?
+            <input required min="1" step="1" value="1" name="quantity" type="number" class="input mt-1">
+          </label>
+          <label class="block text-sm font-medium sm:col-span-2">Delivery postcode / address <input name="delivery_address" class="input mt-1" placeholder="e.g. DY10 1AA"></label>
+          <div class="flex flex-wrap gap-3 sm:col-span-5">
+            <button class="rounded-lg bg-emerald-700 px-4 py-2 font-semibold text-white transition hover:bg-emerald-800">Compare supplier costs</button>
+            <button id="restart-calculator" type="button" class="rounded-lg border border-stone-300 px-4 py-2 font-semibold text-stone-700 hover:bg-stone-100">Restart calculator</button>
+            <button id="save-estimate" type="button" disabled class="rounded-lg border border-emerald-700 px-4 py-2 font-semibold text-emerald-800 enabled:hover:bg-emerald-50 disabled:cursor-not-allowed disabled:opacity-40">Save estimate</button>
+            <button id="export-estimate" type="button" disabled class="rounded-lg border border-emerald-700 px-4 py-2 font-semibold text-emerald-800 disabled:opacity-40">Export…</button>
+            <button id="print-estimate" type="button" disabled class="rounded-lg border border-emerald-700 px-4 py-2 font-semibold text-emerald-800 disabled:opacity-40">Print</button>
+          </div>
+        </form>
+        <div id="cheapest-option" class="mt-5 hidden rounded-lg border border-emerald-300 bg-emerald-50 p-4 text-stone-800" role="status"></div>
+        <div id="estimate-controls" class="mt-4 hidden grid gap-3 rounded-lg border border-stone-200 bg-stone-50 p-3 sm:grid-cols-2">
+          <label class="block text-sm font-medium">Sort comparison by
+            <select id="estimate-sort" class="input mt-1">
+              <option value="cheapest_delivered">Cheapest delivered</option>
+              <option value="nearest">Nearest</option>
+              <option value="least_surplus">Least surplus</option>
+              <option value="best_delivered_per_litre">Best £/L delivered</option>
+            </select>
+          </label>
+          <label class="block text-sm font-medium">What-if delivery for quote-only rows (£)
+            <input id="what-if-delivery" type="number" min="0" step="0.01" class="input mt-1" placeholder="Optional, e.g. 40">
+          </label>
+        </div>
+        <div id="estimate-results" class="mt-5 hidden overflow-x-auto"></div>
+        <div class="mt-5 border-t border-stone-200 pt-4">
+          <div class="flex items-center justify-between gap-3"><h3 class="font-bold">Saved estimates</h3><button id="clear-saved-estimates" type="button" class="text-sm font-semibold text-stone-500 hover:text-red-700">Clear saved</button></div>
+          <div id="saved-estimates" class="mt-3 space-y-2 text-sm"></div>
+        </div>
+      </div>
+
+      <div class="rounded-xl bg-white p-5 shadow-sm ring-1 ring-stone-200">
+        <div class="flex items-center justify-between gap-4">
+          <div><h2 class="text-xl font-bold">Supplier map</h2><p id="map-status" class="text-sm text-stone-500">Loading map…</p></div>
+          <button id="reload-button" class="text-sm font-semibold text-emerald-700 hover:text-emerald-900">Refresh data</button>
+        </div>
+        <form id="map-address-form" class="mt-4 flex gap-2"><input name="address" class="input" placeholder="Find an address or postcode"><button class="button whitespace-nowrap">Find on map</button></form>
+        <div class="mt-3 grid gap-3 sm:grid-cols-2">
+          <label class="block text-sm font-medium">Radius <select id="map-radius" class="input mt-1"><option value="0">All suppliers</option><option value="5">Within 5 miles</option><option value="10">Within 10 miles</option><option value="20">Within 20 miles</option><option value="30">Within 30 miles</option></select></label>
+          <label class="block text-sm font-medium">Marker colour <select id="marker-mode" class="input mt-1"><option value="type">Location type (shops blue, suppliers green)</option></select></label>
+        </div>
+        <label class="mt-3 flex items-center gap-2 text-sm font-medium"><input id="heatmap-toggle" type="checkbox" class="h-4 w-4"> Show supplier density heatmap</label>
+        <div id="map" class="mt-4 rounded-lg"></div>
+      </div>
+
+      <section>
+        <h2 class="mb-3 text-xl font-bold">Current price board</h2>
+        <form id="product-filters" class="mb-4 grid gap-3 rounded-xl bg-white p-4 shadow-sm ring-1 ring-stone-200 sm:grid-cols-2 lg:grid-cols-4">
+          <label class="block text-sm font-medium">Search <input name="search" class="input mt-1" placeholder="Supplier or product"></label>
+          <label class="block text-sm font-medium">Supplier <select name="supplier" class="input mt-1"><option value="">All suppliers</option></select></label>
+          <label class="block text-sm font-medium">Package type <select name="package_type" class="input mt-1"><option value="">All package types</option></select></label>
+          <label class="block text-sm font-medium">Max cost per litre (£) <input name="max_price" type="number" min="0" step="0.0001" class="input mt-1" placeholder="Any price"></label>
+          <label class="flex items-center gap-2 text-sm font-medium sm:col-span-2 lg:col-span-4"><input name="delivery_known" type="checkbox" class="h-4 w-4"> Only show suppliers with configured delivery pricing</label>
+        </form>
+        <div id="product-list" class="grid gap-4 md:grid-cols-2"></div>
+      </section>
+    </section>
+
+    <aside class="space-y-6">
+      <section class="rounded-xl bg-white p-5 shadow-sm ring-1 ring-stone-200">
+        <h2 id="supplier-form-title" class="text-xl font-bold">Add a supplier</h2>
+        <p class="mt-1 text-sm text-stone-500">Coordinates can be copied from a map service.</p>
+        <form id="supplier-form" class="mt-4 space-y-3">
+          <label class="block text-sm font-medium">Supplier name <input required name="name" class="input mt-1"></label>
+                    <label class="block text-sm font-medium">Location type <select name="supplier_type" class="input mt-1"><option value="supplier">Bulk supplier</option><option value="shop">Shop / merchant</option></select></label>
+                    <label class="block text-sm font-medium">Marker colour <select id="marker-mode" class="input mt-1"><option value="type">Location type (shops blue, suppliers green)</option></select></label>
+                    <label class="block text-sm font-medium">Show <select id="supplier-type-filter" class="input mt-1"><option value="all">Shops and suppliers</option><option value="supplier">Bulk suppliers</option><option value="shop">Shops / merchants</option></select></label>
+          <label class="block text-sm font-medium">Address <input name="address" class="input mt-1"></label>
+          <button id="supplier-geocode" type="button" class="text-sm font-semibold text-emerald-700">Find coordinates from address</button>
+          <div class="grid grid-cols-2 gap-3">
+            <label class="block text-sm font-medium">Latitude <input name="latitude" type="number" step="any" class="input mt-1" placeholder="Filled from address"></label>
+            <label class="block text-sm font-medium">Longitude <input name="longitude" type="number" step="any" class="input mt-1" placeholder="Filled from address"></label>
+          </div>
+          <label class="block text-sm font-medium">Website URL <input name="website_url" type="url" class="input mt-1" placeholder="https://"></label>
+          <label class="block text-sm font-medium">Delivery options <textarea name="delivery_options" class="input mt-1" rows="2"></textarea></label>
+          <label class="block text-sm font-medium">Base delivery (£, optional) <input name="delivery_base_gbp" type="number" min="0" step="0.01" class="input mt-1"></label>
+          <label class="block text-sm font-medium">Postcode delivery zones <textarea name="delivery_zones" class="input mt-1" rows="3" placeholder="DY11:15&#10;DY10:20"></textarea><span class="text-xs font-normal text-stone-500">One postcode prefix and price per line.</span></label>
+          <div class="flex gap-3"><button id="supplier-submit" class="button flex-1">Save supplier</button><button id="cancel-supplier-edit" type="button" class="hidden rounded-lg border border-stone-300 px-3 py-2 text-sm font-semibold">Cancel</button><button id="delete-supplier" type="button" class="hidden rounded-lg border border-red-300 px-3 py-2 text-sm font-semibold text-red-700 hover:bg-red-50">Delete</button></div>
+        </form>
+        <div class="mt-5 border-t border-stone-200 pt-4">
+          <h3 class="font-bold">Saved suppliers</h3>
+          <div id="supplier-list" class="mt-3 space-y-2 text-sm"></div>
+        </div>
+        <div class="mt-5 border-t border-stone-200 pt-4">
+          <h3 class="font-bold">Saved shops</h3>
+          <div id="shop-list" class="mt-3 space-y-2 text-sm"></div>
+        </div>
+      </section>
+
+      <section class="rounded-xl bg-white p-5 shadow-sm ring-1 ring-stone-200">
+        <div class="flex items-center justify-between gap-3"><div><h2 class="text-xl font-bold">Scraper review queue</h2><p class="text-sm text-stone-500">Approve only after checking the source page.</p></div><button id="refresh-reviews" class="text-sm font-semibold text-emerald-700">Refresh</button></div>
+        <div id="review-queue" class="mt-4 space-y-3 text-sm"></div>
+      </section>
+
+      <section class="rounded-xl bg-white p-5 shadow-sm ring-1 ring-stone-200">
+        <h2 class="text-xl font-bold">Add or update a product</h2>
+        <p class="mt-1 text-sm text-stone-500">Leave either volume or weight at 0 only if the listing does not give it.</p>
+        <form id="product-form" class="mt-4 space-y-3">
+          <label class="block text-sm font-medium">Supplier <select required name="supplier_id" id="supplier-select" class="input mt-1"></select></label>
+          <label class="block text-sm font-medium">Product name <input required name="name" class="input mt-1"></label>
+          <label class="block text-sm font-medium">Package type <input required name="package_type" class="input mt-1" placeholder="e.g. bulk bag, 25L bag"></label>
+          <label class="block text-sm font-medium">Bag type <select name="package_class" class="input mt-1"><option value="shop">Shop bag</option><option value="bulk">Bulk bag</option></select></label>
+          <div class="grid grid-cols-2 gap-3">
+            <label class="block text-sm font-medium">Volume (L) <input name="volume_litres" type="number" min="0" step="any" value="0" class="input mt-1"></label>
+            <label class="block text-sm font-medium">Weight (kg) <input name="weight_kg" type="number" min="0" step="any" value="0" class="input mt-1"></label>
+          </div>
+          <label class="block text-sm font-medium">Price (£) <input required name="price_gbp" type="number" min="0.01" step="0.01" class="input mt-1"></label>
+          <label class="block text-sm font-medium">Source/product URL <input name="product_url" type="url" class="input mt-1" placeholder="https://"></label>
+          <label class="block text-sm font-medium">Quality tags <input name="quality_tags" class="input mt-1" placeholder="screened, stone-free, blended"></label>
+          <button class="button w-full">Save product</button>
+        </form>
+      </section>
+      <p id="notice" class="hidden rounded-lg p-3 text-sm" role="status"></p>
+    </aside>
+  </main>
+
+  <div id="export-modal" class="fixed inset-0 z-[1100] hidden items-center justify-center bg-stone-900/60 p-4">
+    <div class="w-full max-w-4xl rounded-xl border border-stone-200 bg-white p-5 shadow-2xl">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <h2 class="text-xl font-bold">Export estimate</h2>
+          <p class="mt-1 text-sm text-stone-500">Choose format, scope, and preview before downloading.</p>
+        </div>
+        <button id="export-modal-close" type="button" class="rounded-md px-2 py-1 text-xl leading-none text-stone-500 hover:bg-stone-100" aria-label="Close export menu">&times;</button>
+      </div>
+      <div class="mt-4 grid gap-4 lg:grid-cols-2">
+        <div class="space-y-3">
+          <label class="block text-sm font-medium">Format
+            <select id="export-format" class="input mt-1">
+              <option value="csv">CSV</option>
+              <option value="tsv">TSV</option>
+              <option value="json">JSON</option>
+              <option value="ndjson">NDJSON (JSON Lines)</option>
+              <option value="markdown">Markdown table</option>
+              <option value="html">HTML table</option>
+            </select>
+          </label>
+          <label class="block text-sm font-medium">Rows
+            <select id="export-scope" class="input mt-1">
+              <option value="all">All rows</option>
+              <option value="top10">Top 10 ranked rows</option>
+              <option value="quote_only">Quote-only rows</option>
+              <option value="delivery_known">Known-delivery rows</option>
+            </select>
+          </label>
+          <label class="block text-sm font-medium">Filename
+            <input id="export-filename" class="input mt-1" value="topsoil-estimate">
+          </label>
+          <label class="flex items-center gap-2 text-sm font-medium"><input id="export-include-headers" type="checkbox" class="h-4 w-4" checked> Include column headers</label>
+          <p id="export-preview-meta" class="text-xs text-stone-500"></p>
+        </div>
+        <div>
+          <p class="text-sm font-medium">Preview</p>
+          <pre id="export-preview" class="mt-1 max-h-72 overflow-auto rounded-lg border border-stone-200 bg-stone-50 p-3 text-xs text-stone-700"></pre>
+        </div>
+      </div>
+      <div class="mt-5 flex flex-wrap justify-end gap-2">
+        <button id="export-modal-cancel" type="button" class="rounded-lg border border-stone-300 px-4 py-2 font-semibold text-stone-700 hover:bg-stone-100">Cancel</button>
+        <button id="export-modal-download" type="button" class="button">Download export</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="settings-menu">
+    <button id="settings-toggle" type="button" class="settings-toggle" aria-expanded="false" aria-controls="settings-panel" aria-label="Open settings" title="Settings">&#9881;</button>
+    <section id="settings-panel" class="settings-panel hidden" aria-label="Settings">
+      <div class="flex items-start justify-between gap-3"><div><h2 class="font-bold">Settings</h2><p class="mt-1 text-xs text-stone-500">Manage shared supplier data.</p></div><button id="settings-close" type="button" class="text-lg leading-none text-stone-500" aria-label="Close settings">&times;</button></div>
+      <div class="mt-4 border-t border-stone-200 pt-4">
+        <h3 class="font-semibold">Import suppliers</h3>
+        <p class="mt-1 text-xs text-stone-500">Use CSV, JSON, or pipe-delimited TXT. Include supplier_type as shop or supplier to control which list and map filter it appears in.</p>
+        <div class="mt-3 flex gap-2"><button id="download-supplier-template" type="button" class="button flex-1 text-sm">Download template</button><label class="button flex-1 cursor-pointer text-center text-sm">Choose file<input id="supplier-import-file" type="file" accept=".csv,.json,.txt,.text,application/json,text/csv,text/plain" class="hidden"></label></div>
+        <p id="supplier-import-file-name" class="mt-2 truncate text-xs text-stone-500">No file selected</p>
+        <p id="supplier-import-preview" class="mt-2 text-xs text-stone-500" aria-live="polite">Choose a file to preview its supplier rows.</p>
+        <button id="import-suppliers" type="button" disabled class="button mt-3 w-full disabled:cursor-not-allowed disabled:opacity-40">Import suppliers</button>
+        <p id="supplier-import-status" class="mt-3 hidden rounded-lg p-3 text-xs" role="status" aria-live="polite"></p>
+        <div class="mt-4 flex gap-2"><button id="download-backup" type="button" class="button flex-1 text-sm">Download backup</button><button id="refresh-import-history" type="button" class="button flex-1 text-sm">Import history</button></div>
+        <div id="import-history" class="mt-3 hidden space-y-2 text-xs"></div>
+      </div>
+    </section>
+  </div>
+
+  <footer class="border-t border-stone-200 bg-white py-5 text-center text-xs text-stone-400">
+    <p>Compare topsoil prices with confidence.</p>
+    <p class="mt-1">Developed by <a href="https://github.com/28Riptide12" target="_blank" rel="noopener" class="font-medium text-stone-500 underline decoration-stone-300 underline-offset-2 transition-colors hover:text-emerald-600 hover:decoration-emerald-400">Riptide</a> &middot; <span>&copy; 2025</span></p>
+  </footer>
+
+  <script>window.APP_CONFIG = {{ {'density': density} | tojson }};</script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+  <script src="https://unpkg.com/leaflet.heat/dist/leaflet-heat.js"></script>
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,50 @@
+#map { height: 440px; border: 1px solid #d6d3d1; }
+:root { --page: #f7f7f5; --surface: #fff; --ink: #292524; --muted: #78716c; --line: #e7e5e4; --accent: #047857; }
+* { box-sizing: border-box; }
+body { font-family: 'DM Sans', sans-serif; background: var(--page); color: var(--ink); transition: background-color .2s, color .2s; }
+.eyebrow { font-family: 'Space Mono', monospace; font-size: .72rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
+.input { width: 100%; border: 1px solid #d6d3d1; border-radius: .5rem; padding: .65rem .75rem; background: var(--surface); color: var(--ink); transition: border-color .15s, box-shadow .15s, background-color .2s; }
+.input:focus { outline: 2px solid #34d399; outline-offset: 1px; border-color: #059669; }
+.button { border-radius: .5rem; background: #047857; color: white; font-weight: 600; padding: .6rem 1rem; transition: background .15s; }
+.button:hover { background: #065f46; }
+.leaflet-popup-content { min-width: 220px; }
+.theme-toggle { display: inline-flex; align-items: center; gap: .45rem; border: 1px solid rgba(209, 250, 229, .4); border-radius: .5rem; padding: .55rem .75rem; color: #d1fae5; font-size: .875rem; font-weight: 700; white-space: nowrap; transition: background-color .15s, border-color .15s; }
+.theme-toggle:hover { background: rgba(6, 78, 59, .55); border-color: #a7f3d0; }
+.theme-toggle-track { display: inline-flex; align-items: center; width: 2rem; height: 1.15rem; padding: .15rem; border-radius: 999px; background: #064e3b; }
+.theme-toggle-thumb { width: .85rem; height: .85rem; border-radius: 50%; background: #fef3c7; transform: translateX(0); transition: transform .2s, background-color .2s; }
+.theme-toggle-thumb.is-dark { transform: translateX(.85rem); background: #d1fae5; }
+.result-pill { border-radius: 999px; background: #d1fae5; color: #065f46; padding: .4rem .75rem; font-family: 'Space Mono', monospace; font-size: .75rem; font-weight: 700; white-space: nowrap; }
+.rounded-xl { transition: background-color .2s, box-shadow .2s, border-color .2s; }
+.settings-menu { position: fixed; bottom: 1rem; left: 1rem; z-index: 1000; }
+.settings-toggle { display: grid; width: 2.75rem; height: 2.75rem; place-items: center; border: 1px solid #a8a29e; border-radius: 50%; background: #292524; color: #fff; font-size: 1.35rem; box-shadow: 0 4px 14px rgba(0, 0, 0, .2); }
+.settings-toggle:hover { background: #047857; }
+.settings-panel { position: absolute; bottom: 3.5rem; left: 0; width: min(21rem, calc(100vw - 2rem)); padding: 1rem; border: 1px solid var(--line); border-radius: .75rem; background: var(--surface); color: var(--ink); box-shadow: 0 10px 30px rgba(0, 0, 0, .2); }
+
+body.dark { --page: #151a18; --surface: #202723; --ink: #f5f5f4; --muted: #b8c0ba; --line: #46534a; --accent: #6ee7b7; background: var(--page); color: var(--ink); }
+body.dark .bg-emerald-800 { background-color: #123d31 !important; }
+body.dark .bg-emerald-100, body.dark .result-pill { background-color: #164e3b !important; color: #a7f3d0 !important; }
+body.dark .bg-emerald-50 { background-color: #163c2f !important; }
+body.dark .text-emerald-800, body.dark .text-emerald-700 { color: #6ee7b7 !important; }
+body.dark .text-stone-800, body.dark .text-stone-500 { color: var(--ink) !important; }
+body.dark .text-stone-500 { color: var(--muted) !important; }
+body.dark .border-stone-200, body.dark .border-stone-300, body.dark .border-b { border-color: var(--line) !important; }
+body.dark .hover\:bg-stone-100:hover { background-color: #303a34 !important; }
+body.dark .hover\:bg-emerald-50:hover { background-color: #163c2f !important; }
+body.dark .bg-white, body.dark .input { background-color: var(--surface) !important; }
+body.dark .bg-stone-50 { background-color: var(--page) !important; }
+body.dark .bg-stone-100 { background-color: #303a34 !important; }
+body.dark .ring-stone-200 { --tw-ring-color: var(--line) !important; }
+body.dark .button { background: #059669; }
+body.dark .button:hover { background: #10b981; }
+body.dark .leaflet-popup-content-wrapper, body.dark .leaflet-popup-tip { background: var(--surface); color: var(--ink); }
+body.dark .leaflet-container { background: var(--surface); }
+
+body.dark .input { border-color: #526158; }
+body.dark .input::placeholder { color: #a8aaa7; }
+body.dark .settings-toggle { background: #d1fae5; color: #123d31; }
+
+@media (max-width: 640px) {
+	#map { height: 360px; }
+	header h1 { font-size: 1.75rem; }
+	.theme-toggle { padding: .55rem; }
+}

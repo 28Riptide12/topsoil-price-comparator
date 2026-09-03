@@ -1,0 +1,239 @@
+{
+  "suppliers": [
+    {
+      "id": "parkside-turf",
+      "name": "Parkside Turf",
+      "supplier_type": "supplier",
+      "address": "Birmingham, B14 4PP",
+      "latitude": 52.4024569,
+      "longitude": -1.8732492,
+      "website_url": "https://parksideturf.co.uk/product/top-soil-bulk-bag/",
+      "delivery_options": "West Midlands delivery, including DY11; confirm coverage",
+      "delivery_base_gbp": 30.0,
+      "delivery_zones": [],
+      "products": [
+        {
+          "id": "test",
+          "name": "Top soil",
+          "package_type": "Bulk Bag,  800 Litres",
+          "package_class": "bulk",
+          "volume_litres": 800.0,
+          "weight_kg": 0.0,
+          "price_gbp": 50.0,
+          "product_url": "https://parksideturf.co.uk/product/top-soil-bulk-bag/",
+          "quality_tags": []
+        }
+      ]
+    },
+    {
+      "id": "tw-aggregates",
+      "name": "TW Aggregates",
+      "supplier_type": "supplier",
+      "address": "South Staffordshire, WV9 5BD",
+      "latitude": 52.6372699,
+      "longitude": -2.1691199,
+      "website_url": "https://www.twaggregates.co.uk/product/screened-top-soil-ts1/",
+      "delivery_options": "Delivery options and charges depend on postcode; confirm before ordering.",
+      "delivery_base_gbp": 60.0,
+      "delivery_zones": [],
+      "products": [
+        {
+          "id": "top-soil",
+          "name": "Top soil",
+          "package_type": "Bulk Bag,  850kg",
+          "package_class": "shop",
+          "volume_litres": 0.0,
+          "weight_kg": 850.0,
+          "price_gbp": 66.0,
+          "product_url": "https://www.twaggregates.co.uk/product/screened-top-soil-ts1/",
+          "quality_tags": []
+        }
+      ]
+    },
+    {
+      "id": "handicentre-online",
+      "name": "The Handicentre (online delivery)",
+      "supplier_type": "supplier",
+      "address": "2a-6 Market Street, Bingham, NG13 8AB",
+      "latitude": 52.9517537,
+      "longitude": -0.9528426,
+      "website_url": "https://www.handicentre.co.uk/products/building-supplies/bulk-bags/top-soil-bulk-bag-including-delivery",
+      "delivery_options": "Online delivery; confirm delivery postcode and terms before ordering.",
+      "delivery_base_gbp": null,
+      "delivery_zones": [],
+      "products": [
+        {
+          "id": "top-soil",
+          "name": "Top soil",
+          "package_type": "Bulk Bag,  850kg",
+          "package_class": "bulk",
+          "volume_litres": 0.0,
+          "weight_kg": 850.0,
+          "price_gbp": 89.99,
+          "product_url": "https://www.handicentre.co.uk/products/building-supplies/bulk-bags/top-soil-bulk-bag-including-delivery",
+          "quality_tags": [
+            "Quote-Only"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "buckley-landscape-supplies",
+      "name": "Buckley Landscape Supplies",
+      "supplier_type": "supplier",
+      "address": "6A, The Coach House, Castle Gate, Newark NG24 1BG",
+      "latitude": 53.0767881,
+      "longitude": -0.812472,
+      "website_url": "https://buckleylandscapesupplies.com/pages/top-soil-kidderminster/",
+      "delivery_options": "Scheduled multi-size bulk bag delivery",
+      "delivery_base_gbp": 25.0,
+      "delivery_zones": [],
+      "products": [
+        {
+          "id": "top-soil-beds-borders",
+          "name": "Top Soil - Beds & Borders",
+          "package_type": "750kg",
+          "package_class": "bulk",
+          "volume_litres": 0.0,
+          "weight_kg": 750.0,
+          "price_gbp": 131.42,
+          "product_url": "https://buckleylandscapesupplies.com/products/top-soil-beds-borders?variant=42385696456883",
+          "quality_tags": [
+            "Delivery included"
+          ]
+        },
+        {
+          "id": "top-soil-beds-borders-50c666",
+          "name": "Top Soil - Beds & Borders",
+          "package_type": "Bulk Bag,  1000kg",
+          "package_class": "bulk",
+          "volume_litres": 0.0,
+          "weight_kg": 1000.0,
+          "price_gbp": 143.66,
+          "product_url": "https://buckleylandscapesupplies.com/products/top-soil-beds-borders?variant=42385697505459",
+          "quality_tags": []
+        },
+        {
+          "id": "top-soil-beds-borders-fd4862",
+          "name": "Top Soil - Beds & Borders",
+          "package_type": "Bulk Bag,  500kg",
+          "package_class": "bulk",
+          "volume_litres": 0.0,
+          "weight_kg": 500.0,
+          "price_gbp": 127.08,
+          "product_url": "https://buckleylandscapesupplies.com/products/top-soil-beds-borders?variant=42385698554035",
+          "quality_tags": []
+        }
+      ]
+    },
+    {
+      "id": "valley-contractors",
+      "name": "Valley Contractors",
+      "address": "Worcester Road Kidderminster DY10 1JB",
+      "latitude": 52.1936,
+      "longitude": -2.2216,
+      "website_url": "https://www.valleycontractors.co.uk/topsoil-kidderminster/",
+      "delivery_options": "Economy and next day delivery",
+      "delivery_base_gbp": 30.0,
+      "delivery_zones": [],
+      "products": [
+        {
+          "id": "top-soil",
+          "name": "Top soil",
+          "package_type": "Bulk Bag,  500 Litres",
+          "package_class": "bulk",
+          "volume_litres": 500.0,
+          "weight_kg": 0.0,
+          "price_gbp": 95.0,
+          "product_url": "https://www.valleycontractors.co.uk/product/high-quality-planting-topsoil/",
+          "quality_tags": []
+        },
+        {
+          "id": "top-soil-61dfe1",
+          "name": "Top soil",
+          "package_type": "Bulk Bag,  750 Litres",
+          "package_class": "shop",
+          "volume_litres": 750.0,
+          "weight_kg": 0.0,
+          "price_gbp": 109.0,
+          "product_url": "https://www.valleycontractors.co.uk/product/high-quality-planting-topsoil/",
+          "quality_tags": []
+        }
+      ]
+    },
+    {
+      "id": "b-q-kidderminster",
+      "name": "B&Q Kidderminster",
+      "supplier_type": "shop",
+      "address": "Green Street Kidderminster DY10 1AX",
+      "latitude": 52.385,
+      "longitude": -2.246,
+      "website_url": "https://www.diy.com",
+      "delivery_options": "Home delivery or click and collect",
+      "delivery_base_gbp": 5.0,
+      "delivery_zones": [],
+      "products": [
+        {
+          "id": "top-soil-25l",
+          "name": "Top soil 25L",
+          "package_type": "25L",
+          "package_class": "shop",
+          "volume_litres": 25.0,
+          "weight_kg": 0.0,
+          "price_gbp": 4.5,
+          "product_url": "https://www.diy.com/departments/verve-peat-free-top-soil-25l-ideal-for-new-planting-areas/5059340918068_BQ.prd",
+          "quality_tags": []
+        }
+      ]
+    },
+    {
+      "id": "singletons-nurseries",
+      "name": "Singletons Nurseries",
+      "supplier_type": "supplier",
+      "address": "00 Birmingham Rd, Lydiate Ash, Bromsgrove B61 0HT",
+      "latitude": 52.3710122,
+      "longitude": -2.0450214,
+      "website_url": "https://jpeaggregates.co.uk",
+      "delivery_options": "",
+      "delivery_base_gbp": null,
+      "delivery_zones": [],
+      "products": [
+        {
+          "id": "premium-topsoil",
+          "name": "Premium Topsoil",
+          "package_type": "Bulk Bag,  850kg",
+          "package_class": "bulk",
+          "volume_litres": 0.0,
+          "weight_kg": 850.0,
+          "price_gbp": 90.0,
+          "product_url": "https://www.westmidlands-turf-topsoil.co.uk/shop/screened-topsoil/premium-topsoil/",
+          "quality_tags": []
+        },
+        {
+          "id": "premium-topsoil-57cfea",
+          "name": "Premium Topsoil",
+          "package_type": "Bulk Bag,  425kg",
+          "package_class": "shop",
+          "volume_litres": 0.0,
+          "weight_kg": 425.0,
+          "price_gbp": 50.0,
+          "product_url": "https://www.westmidlands-turf-topsoil.co.uk/shop/screened-topsoil/premium-topsoil/",
+          "quality_tags": [
+            "Screened"
+          ]
+        },
+        {
+          "id": "standard-topsoil",
+          "name": "Standard Topsoil",
+          "package_type": "Bulk bag, 850kg",
+          "package_class": "bulk",
+          "volume_litres": 0.0,
+          "weight_kg": 850.0,
+          "price_gbp": 70.0,
+          "product_url": "https://www.westmidlands-turf-topsoil.co.uk/shop/screened-topsoil/quality-screened-topsoil/",
+          "quality_tags": []
+        }
+      ]
+    }
+  ]
+}
