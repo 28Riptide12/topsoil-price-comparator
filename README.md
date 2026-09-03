@@ -3,6 +3,9 @@
 Compare bulk and retail topsoil listings on a like-for-like basis (per litre / per kg),
 work out how much you need with a planter calculator, and find the nearest supplier on a map.
 
+**🔗 [Live demo](https://topsoil-price-comparator.onrender.com)** — hosted on Render's free tier, so
+the first load after inactivity may take ~30s to wake up.
+
 ![Topsoil Price Comparator hero](screenshots/hero.png)
 
 ## Features
@@ -64,19 +67,6 @@ python scrape_prices.py apply <update-id>
 
 `collect` only stages candidate price updates — review every queued update in `/api/pending-updates`
 before applying it. Nothing is published automatically.
-
-## Deploying a live preview (Render)
-
-This repo includes a [`render.yaml`](render.yaml) and `Procfile` so it deploys to
-[Render](https://render.com)'s free tier with almost no setup:
-
-1. Push this repo to GitHub (already done if you're reading this on GitHub).
-2. On Render, choose **New → Blueprint** and point it at this repository — it will pick up
-   `render.yaml` automatically and run `gunicorn app:app`.
-3. Alternatively, choose **New → Web Service**, set the build command to
-   `pip install -r requirements.txt` and the start command to `gunicorn app:app --bind 0.0.0.0:$PORT`.
-
-The free tier spins down after inactivity, so the first request after a while may take ~30s to wake up.
 
 ## Notes
 
