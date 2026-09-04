@@ -6,6 +6,8 @@ work out how much you need with a planter calculator, and find the nearest suppl
 **🔗 [Live demo](https://topsoil-price-comparator.onrender.com)** — hosted on Render's free tier, so
 the first load after inactivity may take ~30s to wake up.
 
+[![Self-host guide](https://img.shields.io/badge/📖_Self--host_guide-View_walkthrough-2e7d32?style=for-the-badge)](https://28riptide12.github.io/Portfolio/projects/self-host-topsoil-price-comparator.html)
+
 ![Topsoil Price Comparator hero](screenshots/hero.png)
 
 ## Features
