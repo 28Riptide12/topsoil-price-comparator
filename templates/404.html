@@ -3,12 +3,29 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>404 Page Not Found — Topsoil Price Comparator</title>
+  <title>UH OH! Page Not Found — Topsoil Price Comparator</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  <style>
+    .topsoil-404-white { display: none; }
+    body.dark .topsoil-404-black { display: none; }
+    body.dark .topsoil-404-white { display: block; }
+    body.dark .text-stone-900 { color: var(--ink) !important; }
+    body.dark .text-stone-700 { color: var(--muted) !important; }
+    body.dark .text-stone-600 { color: var(--muted) !important; }
+  </style>
+  <script>
+    (function () {
+      var saved = localStorage.getItem('topsoil-theme');
+      var dark = saved ? saved === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
+      document.addEventListener('DOMContentLoaded', function () {
+        if (dark) document.body.classList.add('dark');
+      });
+    })();
+  </script>
 </head>
 <body class="bg-stone-50 text-stone-800 min-h-screen flex flex-col justify-between">
   <header class="bg-emerald-800 text-white shadow-sm">
@@ -21,25 +38,27 @@
     </div>
   </header>
 
-  <main class="mx-auto max-w-2xl px-5 py-12 text-center my-auto">
-    <div class="rounded-2xl bg-white p-8 sm:p-12 shadow-sm ring-1 ring-stone-200">
-      <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-emerald-100 text-4xl mb-6">
-        🚜
-      </div>
-      <h2 class="text-4xl font-extrabold text-stone-900 tracking-tight">404</h2>
-      <h3 class="mt-2 text-xl font-semibold text-stone-700">Page Not Found</h3>
-      <p class="mt-4 text-stone-600 text-sm leading-relaxed">
-        We couldn't find the page or route you were looking for. It may have been moved or doesn't exist.
-      </p>
+  <main class="mx-auto max-w-3xl px-5 py-10 text-center my-auto">
+    <h2 class="text-3xl sm:text-5xl font-extrabold text-stone-900 tracking-tight">UH OH! Page Not Found</h2>
 
-      <div class="mt-8 flex flex-wrap justify-center gap-3">
-        <a href="{{ url_for('index') }}" class="rounded-lg bg-emerald-700 px-5 py-2.5 font-semibold text-white transition hover:bg-emerald-800 text-sm">
-          🏠 Price Comparator Home
-        </a>
-        <a href="{{ url_for('serve_docs') }}" class="rounded-lg border border-stone-300 px-5 py-2.5 font-semibold text-stone-700 hover:bg-stone-100 transition text-sm">
-          📖 View Documentation
-        </a>
-      </div>
+    <div class="my-6 max-w-xl mx-auto">
+      <img src="{{ url_for('static', filename='404-topsoil-black.png') }}" alt="404 Illustration: Mole surveyor with magnifying glass, topsoil bags, and 404 sign" class="topsoil-404-black w-full h-auto object-contain max-h-[340px] mx-auto">
+      <img src="{{ url_for('static', filename='404-topsoil-white.png') }}" alt="404 Illustration: Mole surveyor with magnifying glass, topsoil bags, and 404 sign" class="topsoil-404-white w-full h-auto object-contain max-h-[340px] mx-auto">
+    </div>
+
+    <div class="space-y-1.5 text-stone-700 font-medium text-base sm:text-lg">
+      <p class="font-bold text-lg sm:text-xl text-stone-900">Oops! This page has been buried.</p>
+      <p>The topsoil data you were looking for is elsewhere, but not this page.</p>
+      <p class="text-stone-600 text-sm sm:text-base">Try digging back to our homepage or using the search tool.</p>
+    </div>
+
+    <div class="mt-8 flex flex-wrap justify-center gap-3">
+      <a href="{{ url_for('index') }}" class="rounded-lg bg-emerald-700 px-6 py-2.5 font-semibold text-white transition hover:bg-emerald-800 text-sm">
+        🏠 Price Comparator Home
+      </a>
+      <a href="{{ url_for('serve_docs') }}" class="rounded-lg border border-stone-300 px-5 py-2.5 font-semibold text-stone-700 hover:bg-stone-100 transition text-sm">
+        📖 View Documentation
+      </a>
     </div>
   </main>
 
