@@ -737,7 +737,9 @@ def reject_pending_update(update_id: str):
 
 @app.errorhandler(404)
 def not_found(error):
-    return jsonify({"error": "API endpoint not found."}), 404
+    if request.path.startswith("/api/"):
+        return jsonify({"error": "API endpoint not found."}), 404
+    return render_template("404.html"), 404
 
 
 @app.errorhandler(405)
